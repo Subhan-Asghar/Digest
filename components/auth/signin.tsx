@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils"
 import { useRouter } from 'next/navigation'
+import { authClient } from '@/lib/auth-client'
 export const formSchema = z.object({
   email: z
     .string()
@@ -32,15 +33,7 @@ export const formSchema = z.object({
     .email({ message: "Please enter a valid email address." }),
 
   password: z
-    .string()
-    .min(8, { message: "Password must be at least 8 characters long." })
-    .max(64, { message: "Password must be less than 64 characters." })
-    .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter." })
-    .regex(/[a-z]/, { message: "Password must contain at least one lowercase letter." })
-    .regex(/[0-9]/, { message: "Password must contain at least one number." })
-    .regex(/[^A-Za-z0-9]/, {
-      message: "Password must contain at least one special character.",
-    }),
+    .string(),
 });
 
 const Signin = ({
@@ -58,8 +51,28 @@ const Signin = ({
 
   const router=useRouter()
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+
+ async function onSubmit(values: z.infer<typeof formSchema>) {
+  setIsloading(true);
+
+  try {
+    const result = authClient.signIn.email(values);
+    const toastId = toast.loading("Logging in");
+
+    const { data, error } = await result;
+    toast.dismiss(toastId);
+
+    if (error || !data) {
+      toast.error(error?.message || "Something went wrong. Please try again.");
+      return;
+    }
+
+    router.push("/dashboard");
+  } finally {
+    setIsloading(false);
   }
+}
+
   return (
     <>
       <div className={cn("flex flex-col gap-6", className)} {...props}>

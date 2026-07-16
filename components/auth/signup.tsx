@@ -4,7 +4,7 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller,useForm } from "react-hook-form"
 import { toast } from "sonner"
-
+import {authClient} from "@/lib/auth-client"
 import { Button } from "@/components/ui/button"
 
 import {
@@ -53,28 +53,47 @@ const Signup = ({
   className,
   ...props
 }: React.ComponentProps<"div">) => {
-  const [isloading, setIsloading] = React.useState<boolean>(false)
+    const [isloading, setIsloading] = React.useState<boolean>(false)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-        name: "",
+    name: "",
       email: "",
       password: "",
     },
   })
 
   const router=useRouter()
-
+ 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+     setIsloading(true);
+   
+     try {
+      const result = authClient.signUp.email(values);
+      const toastId=toast.loading("Creating your account");
+      
+      const {data,error}=await result;
+      toast.dismiss(toastId);
+      if (error || !data) {
+        toast.error(error?.message || "Something went wrong. Please try again.");
+        return;
+      }
+  
+       router.push("/dashboard");
+     }
+      finally {
+       setIsloading(false);
+     }
   }
+
   return (
     <>
       <div className={cn("flex flex-col gap-6", className)} {...props}>
         <Card>
           <CardHeader>
-            <CardTitle>Login to your account</CardTitle>
+            <CardTitle>Create an account</CardTitle>
             <CardDescription>
-              Enter your email below to login to your account
+              Enter your details below to create your account
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -162,9 +181,9 @@ const Signup = ({
     </Button>
 
     <FieldDescription className="text-center">
-      Don't have an account?{" "}
-      <a href="/signup" className="underline">
-        Sign up
+      Already have an account?{" "}
+      <a href="/signin" className="underline">
+        Sign in
       </a>
     </FieldDescription>
   </form>
