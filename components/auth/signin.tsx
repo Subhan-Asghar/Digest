@@ -67,7 +67,7 @@ const Signin = ({
       return;
     }
 
-    router.push("/dashboard");
+    router.push("/chat");
   } finally {
     setIsloading(false);
   }
