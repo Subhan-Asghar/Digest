@@ -8,7 +8,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-
+import { usePathname } from "next/navigation"
 import UploadDocument from "./document/UploadDocument"
 
 export function NavMain({
@@ -20,6 +20,8 @@ export function NavMain({
     icon?: Icon
   }[]
 }) {
+
+  const page=usePathname()
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
@@ -42,8 +44,8 @@ export function NavMain({
         </SidebarMenu>
         <SidebarMenu>
           {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton tooltip={item.title}>
+            <SidebarMenuItem key={item.title} >
+              <SidebarMenuButton tooltip={item.title} isActive={"/library"==`/${page}`? true : false}>
                 {item.icon && <item.icon />}
                 <span>{item.title}</span>
               </SidebarMenuButton>

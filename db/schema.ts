@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp, boolean, index } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, index, uuid, integer ,vector} from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -91,3 +91,30 @@ export const accountRelations = relations(account, ({ one }) => ({
     references: [user.id],
   }),
 }));
+
+
+export const file=pgTable("file",{
+  
+  id:uuid("id").defaultRandom().primaryKey(),
+  userId:text("userId").notNull().references(()=>user.id,{onDelete:"cascade"}),
+  name:text("name").notNull(),
+  size:integer("size").notNull(),
+  type:text("type").notNull(),
+  createdAt:timestamp("createdAt").defaultNow()
+})
+
+export const fileChunk=pgTable("file_chunk",{
+  id:uuid("id").defaultRandom().primaryKey(),
+  fileId:uuid("fileId").notNull().references(()=>file.id,{onDelete:"cascade"}),
+  userId: text("userId")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+
+  content: text("content").notNull(),
+
+  embedding: vector("embedding", { dimensions: 768 }).notNull(),
+
+  chunkIndex: integer("chunkIndex").notNull(),
+
+  createdAt: timestamp("createdAt").defaultNow(),
+})

@@ -29,6 +29,9 @@ import {
     useFileUpload,
 } from "@/hooks/use-file-upload";
 import { Button } from "@/components/ui/button";
+import { useUploadDocument } from '@/lib/queries/document';
+import { toast } from 'sonner';
+
 
 const getFileIcon = (file: { file: File | { type: string; name: string } }) => {
     const fileType = file.file instanceof File ? file.file.type : file.file.type;
@@ -43,37 +46,38 @@ const getFileIcon = (file: { file: File | { type: string; name: string } }) => {
     ) {
         return <FileTextIcon className="size-4 opacity-60" />;
     }
-    if (
-        fileType.includes("zip") ||
-        fileType.includes("archive") ||
-        fileName.endsWith(".zip") ||
-        fileName.endsWith(".rar")
-    ) {
-        return <FileArchiveIcon className="size-4 opacity-60" />;
-    }
-    if (
-        fileType.includes("excel") ||
-        fileName.endsWith(".xls") ||
-        fileName.endsWith(".xlsx")
-    ) {
-        return <FileSpreadsheetIcon className="size-4 opacity-60" />;
-    }
-    if (fileType.includes("video/")) {
-        return <VideoIcon className="size-4 opacity-60" />;
-    }
-    if (fileType.includes("audio/")) {
-        return <HeadphonesIcon className="size-4 opacity-60" />;
-    }
-    if (fileType.startsWith("image/")) {
-        return <ImageIcon className="size-4 opacity-60" />;
-    }
+    // if (
+    //     fileType.includes("zip") ||
+    //     fileType.includes("archive") ||
+    //     fileName.endsWith(".zip") ||
+    //     fileName.endsWith(".rar")
+    // ) {
+    //     return <FileArchiveIcon className="size-4 opacity-60" />;
+    // }
+    // if (
+    //     fileType.includes("excel") ||
+    //     fileName.endsWith(".xls") ||
+    //     fileName.endsWith(".xlsx")
+    // ) {
+    //     return <FileSpreadsheetIcon className="size-4 opacity-60" />;
+    // }
+    // if (fileType.includes("video/")) {
+    //     return <VideoIcon className="size-4 opacity-60" />;
+    // }
+    // if (fileType.includes("audio/")) {
+    //     return <HeadphonesIcon className="size-4 opacity-60" />;
+    // }
+    // if (fileType.startsWith("image/")) {
+    //     return <ImageIcon className="size-4 opacity-60" />;
+    // }
     return <FileIcon className="size-4 opacity-60" />;
 };
 
 
 const UploadDocument = ({ trigger }: { trigger: React.ReactNode }) => {
-    const maxSize = 100 * 1024 * 1024; // 10MB default
+    const maxSize = 10 * 1024 * 1024; // 10MB default
     const maxFiles = 5;
+    const { mutateAsync } = useUploadDocument()
 
     const [
         { files, isDragging, errors },
@@ -91,8 +95,37 @@ const UploadDocument = ({ trigger }: { trigger: React.ReactNode }) => {
         maxFiles,
         maxSize,
         multiple: true,
+        accept: ".pdf,.doc,.docx",
     });
 
+    const submit = async () => {
+        try {
+
+            const data = new FormData()
+            files.forEach((item) => {
+                if (item.file instanceof File) {
+                    data.append("files", item.file);
+                }
+            });
+
+            const res = mutateAsync(data)
+            toast.promise(res, {
+                loading: "Uploading file...",
+                success: "File uploaded successfully!",
+                error: (error) => {
+                    return error?.message || "Failed to upload file.";
+                },
+            });
+            await res
+
+            clearFiles()
+
+        }
+        catch (err) {
+            console.log("Failed to upload files ", err)
+        }
+
+    }
     return (
         <Dialog>
             <DialogTrigger className='w-full'>{trigger}</DialogTrigger>
@@ -100,7 +133,7 @@ const UploadDocument = ({ trigger }: { trigger: React.ReactNode }) => {
                 <DialogHeader>
                     <DialogTitle>Upload Document</DialogTitle>
                     <DialogDescription>
-                        Select a document to upload. Supported formats. Maximum file size: 10 MB.
+                        Select a document to upload. Supported formats. Maximum file size: {formatBytes(maxSize)}.
                     </DialogDescription>
                 </DialogHeader>
                 <div className="flex flex-col gap-2">
@@ -203,6 +236,7 @@ const UploadDocument = ({ trigger }: { trigger: React.ReactNode }) => {
                                     </Button>
                                     <Button
                                         className='gap-2'
+                                        onClick={submit}
                                         size="sm" variant="default">
                                         <UploadIcon />Upload
                                     </Button>

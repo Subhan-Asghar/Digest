@@ -8,6 +8,20 @@
       "when": 1784208380788,
       "tag": "0000_young_silverclaw",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1784654001527,
+      "tag": "0001_romantic_the_stranger",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1784654464770,
+      "tag": "0002_tearful_sheva_callister",
+      "breakpoints": true
     }
   ]
 }
