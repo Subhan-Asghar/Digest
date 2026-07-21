@@ -6,7 +6,7 @@ import { file, fileChunk } from "@/db/schema";
 import { chunkText, parseDocx, parsePdf } from "@/lib/textExtract";
 import { embed } from "ai";
 import { google } from "@ai-sdk/google";
-
+import { desc, eq, and} from "drizzle-orm";
 export async function POST(req: NextRequest) {
     try {
         const session = await auth.api.getSession({
@@ -81,6 +81,65 @@ export async function POST(req: NextRequest) {
         console.error("Error uploading files:", error);
         return NextResponse.json({
             message: "Failed to upload files",
+        }, { status: 500 })
+    }
+}
+
+
+export async function GET(req: NextRequest) {
+    try {
+        const session = await auth.api.getSession({
+            headers: await headers()
+        })
+        if (!session) {
+            return NextResponse.json({
+                message: "Unauthorized user",
+
+            }, { status: 401 })
+        }
+
+        const userId = session.user.id as string
+        const result = await db.select().from(file).where(eq(file.userId, userId)).orderBy(desc(file.createdAt));
+
+        return NextResponse.json({
+            message: "Files fetched successfully",
+            data: result
+        }, { status: 200 })
+    }
+    catch (error) {
+        console.error("Error fetching files:", error);
+        return NextResponse.json({
+            message: "Failed to get files",
+        }, { status: 500 })
+    }
+}
+
+
+export async function DELETE(req: NextRequest) {
+    try {
+        const session = await auth.api.getSession({
+            headers: await headers()
+        })
+        if (!session) {
+            return NextResponse.json({
+                message: "Unauthorized user",
+
+            }, { status: 401 })
+        }
+
+        const userId = session.user.id as string
+        const data = await req.json()
+        const { id } = data
+        await db.delete(file).where(and(eq(file.id, id),eq(file.userId, userId)));
+
+        return NextResponse.json({
+            message: "File deleted successfully",
+        }, { status: 200 })
+    }
+    catch (error) {
+        console.error("Error deleting file:", error);
+        return NextResponse.json({
+            message: "Failed to delete file",
         }, { status: 500 })
     }
 }

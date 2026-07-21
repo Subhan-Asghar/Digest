@@ -15,7 +15,7 @@ export default function PageLayout({
             <AppSidebar />
             <div className="flex flex-1 flex-col h-screen overflow-hidden">
            <Navbar />
-          <main className="flex-1 overdlow-hidden">
+          <main className="flex-1 overflow-hidden">
             {children}
           </main>
         </div>
