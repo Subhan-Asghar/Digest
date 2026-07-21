@@ -1,4 +1,4 @@
-import {useMutation, useQueryClient  } from "@tanstack/react-query"; 
+import {useMutation, useQueryClient,useQuery } from "@tanstack/react-query"; 
 import axios from "axios";
 
 export const useUploadDocument=()=>{
@@ -12,3 +12,19 @@ export const useUploadDocument=()=>{
     })
     return {mutateAsync,isPending}
 }
+
+export const useGetDocuments=()=>{
+
+     const {data,isLoading,isError} = useQuery({
+        queryKey:["getDocuments"],
+        queryFn:async()=>{
+            const res=await axios.get("/api/document")
+            return res.data
+        },
+        
+        staleTime:Infinity
+    })
+
+    return {data,isLoading,isError}
+}
+  

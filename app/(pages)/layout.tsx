@@ -1,8 +1,10 @@
 
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import { TooltipProvider } from "@/components/ui/tooltip";
+import Navbar from "@/components/navbar";
 export default function PageLayout({
+
     children,
 }: Readonly<{
     children: React.ReactNode
@@ -11,8 +13,12 @@ export default function PageLayout({
         <TooltipProvider delayDuration={0}>
         <SidebarProvider>
             <AppSidebar />
-            <SidebarTrigger />
-            <main>{children}</main>
+            <div className="flex flex-1 flex-col h-screen overflow-hidden">
+           <Navbar />
+          <main className="flex-1 overdlow-hidden">
+            {children}
+          </main>
+        </div>
         </SidebarProvider>
         </TooltipProvider>
     )
