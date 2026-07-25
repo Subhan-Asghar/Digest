@@ -6,8 +6,9 @@ import {
   IconBooks,
 } from "@tabler/icons-react"
 
-import { NavMain } from "./nav-main"
-import { NavUser } from "./nav-user"
+import { NavMain } from "@/components/sidebar/nav-main"
+import { NavUser } from "@/components/sidebar/nav-user"
+import ChatHistory from "@/components/sidebar/chat-history"
 import {
   Sidebar,
   SidebarContent,
@@ -17,8 +18,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import {useSession} from "@/store/useSession"
-import type {user} from "@/store/useSession"
 
   const navMain= [
     {
@@ -34,15 +33,7 @@ import type {user} from "@/store/useSession"
   ]
 
 
- 
-interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
-  user: user
-}
-
-
-
 export function AppSidebar() {
-
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
@@ -62,6 +53,7 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={navMain} />
+        <ChatHistory/>
       </SidebarContent>
       <SidebarFooter>
         <NavUser/>

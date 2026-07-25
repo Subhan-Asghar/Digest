@@ -5,6 +5,8 @@ import { db } from "@/db/db";
 import { generateText } from 'ai';
 import { chat} from "@/db/schema";
 import { google } from "@ai-sdk/google";
+import { desc, eq, and} from "drizzle-orm";
+
 
 
 export async function POST(req: NextRequest) {
@@ -59,4 +61,63 @@ STRICT INSTRUCTIONS:
         }, { status: 500 })
     }
 
+}
+
+
+
+export async function GET(req: NextRequest) {
+    try {
+        const session = await auth.api.getSession({
+            headers: await headers()
+        })
+        if (!session) {
+            return NextResponse.json({
+                message: "Unauthorized user",
+
+            }, { status: 401 })
+        }
+
+        const userId = session.user.id as string
+        const result = await db.select().from(chat).where(eq(chat.userId, userId)).orderBy(desc(chat.createdAt));
+
+        return NextResponse.json({
+            message: "Chat fetched successfully",
+            data: result
+        }, { status: 200 })
+    }
+    catch (error) {
+        console.error("Error fetching chat:", error);
+        return NextResponse.json({
+            message: "Failed to get chat",
+        }, { status: 500 })
+    }
+}
+
+export async function DELETE(req: NextRequest) {
+    try {
+        const session = await auth.api.getSession({
+            headers: await headers()
+        })
+        if (!session) {
+            return NextResponse.json({
+                message: "Unauthorized user",
+
+            }, { status: 401 })
+        }
+
+        const userId = session.user.id as string
+        const data = await req.json()
+        const { id } = data
+        await db.delete(chat).where(and(eq(chat.id, id),eq(chat.userId, userId)));
+
+        return NextResponse.json({
+            message: "Chat deleted successfully",
+        }, { status: 200 })
+    }
+    catch (error) {
+        console.error("Error deleting chat:", error);
+        return NextResponse.json({
+            message: "Failed to delete chat",
+        }, { status: 500 })
+    }
 }

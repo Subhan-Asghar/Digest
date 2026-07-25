@@ -7,6 +7,7 @@ import { chunkText, parseDocx, parsePdf } from "@/lib/textExtract";
 import { embed } from "ai";
 import { google } from "@ai-sdk/google";
 import { desc, eq, and} from "drizzle-orm";
+
 export async function POST(req: NextRequest) {
     try {
         const session = await auth.api.getSession({

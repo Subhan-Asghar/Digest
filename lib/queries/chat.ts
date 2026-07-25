@@ -37,7 +37,7 @@ export const useDeleteChat=()=>{
     const {mutateAsync,isPending}= useMutation({
 
         mutationFn:async(id:string)=>{
-            const res=await axios.delete('api/chat',{
+            const res=await axios.delete('/api/chat',{
                 data:{id}
             })
             

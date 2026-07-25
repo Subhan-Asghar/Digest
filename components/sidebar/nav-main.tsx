@@ -9,7 +9,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { usePathname ,useRouter} from "next/navigation"
-import UploadDocument from "./document/UploadDocument"
+import UploadDocument from "@/components/document/UploadDocument"
 
 export function NavMain({
   items,

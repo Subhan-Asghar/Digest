@@ -36,7 +36,7 @@ export const useDeleteDocument=()=>{
     const {mutateAsync,isPending}= useMutation({
 
         mutationFn:async(id:string)=>{
-            const res=await axios.delete('api/document',{
+            const res=await axios.delete('/api/document',{
                 data:{id}
             })
             
