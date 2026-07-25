@@ -22,6 +22,20 @@
       "when": 1784654464770,
       "tag": "0002_tearful_sheva_callister",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1784949516399,
+      "tag": "0003_dazzling_steel_serpent",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1784949861966,
+      "tag": "0004_fine_captain_britain",
+      "breakpoints": true
     }
   ]
 }

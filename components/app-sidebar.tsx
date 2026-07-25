@@ -17,7 +17,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-
+import {useSession} from "@/store/useSession"
+import type {user} from "@/store/useSession"
 
   const navMain= [
     {
@@ -32,17 +33,19 @@ import {
     },
   ]
 
-interface SidebarUserData {
-  name: string
-  email: string
-  avatar?: string
-}
+
  
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
-  user: SidebarUserData 
+  user: user
 }
 
+
+
 export function AppSidebar({ user, ...props }: AppSidebarProps) {
+
+  const {setUser}=useSession()
+  setUser(user)
+
   return (
     <Sidebar collapsible="icon" {...props} >
       <SidebarHeader>
@@ -64,7 +67,7 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
         <NavMain items={navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} />
+        <NavUser/>
       </SidebarFooter>
     </Sidebar>
   )

@@ -1,0 +1,1 @@
+ALTER TABLE "message" ALTER COLUMN "chatId" SET DATA TYPE uuid;

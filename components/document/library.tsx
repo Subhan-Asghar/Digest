@@ -26,7 +26,7 @@ const Library = () => {
                 {data && data.data.map((doc: any) => (
 
                     <div
-                        className="flex items-center justify-between gap-2 rounded-lg border bg-background p-2 pe-3"
+                        className="flex items-center justify-between gap-2 rounded-lg border bg-background p-2 pe-3 max-w-md"
                         key={doc.id}
                     >
                         <div className="flex items-center gap-3 overflow-hidden">

@@ -1,10 +1,8 @@
 "use client"
-import React, { useMemo, useState } from 'react'
+import React, { useMemo} from 'react'
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
