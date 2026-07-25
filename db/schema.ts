@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp, boolean, index, uuid, integer ,vector} from "drizzle-orm/pg-core";
+
+import { serial,pgTable, pgEnum,text, timestamp, boolean, index, uuid, integer ,vector} from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -117,4 +118,25 @@ export const fileChunk=pgTable("file_chunk",{
   chunkIndex: integer("chunkIndex").notNull(),
 
   createdAt: timestamp("createdAt").defaultNow(),
+})
+
+
+export const chat=pgTable("chat",{
+  id:uuid("id").defaultRandom().primaryKey(),
+  userId:text("userId").notNull().references(()=>user.id,{onDelete:"cascade"}),
+  title:text("title"),
+  createdAt:timestamp("createdAt").defaultNow()
+})
+
+export const roleEnum = pgEnum('role', ['user', 'assistant']);
+
+export const message=pgTable("message",{
+
+  id:serial("id").primaryKey(),
+  userId:text("userId").notNull().references(()=>user.id,{onDelete:"cascade"}),
+  chatId:uuid("chatId").notNull().references(() => chat.id, { onDelete: "cascade" }),
+  role: roleEnum('role').notNull(),
+  content:text("content").notNull(),
+  createdAt:timestamp("createdAt").defaultNow()
+
 })
