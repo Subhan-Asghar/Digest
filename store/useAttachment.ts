@@ -8,14 +8,14 @@ export type Attachment = {
 type Attachments = {
   attachment: Attachment[],
   setAttachment: (documents: Attachment[]) => void,
-  removeAttachment:(label:string)=>void
+  removeAttachment:(value:string)=>void
 }
 
 export const useAttachments = create<Attachments>()((set) => ({
   attachment: [],
   setAttachment: (documents) => set({ attachment: documents }),
-   removeAttachment: (label) =>
+   removeAttachment: (value) =>
     set((state) => ({
-      attachment: state.attachment.filter((item) => item.label !== label),
+      attachment: state.attachment.filter((item) => item.value !== value),
     })),
 }))

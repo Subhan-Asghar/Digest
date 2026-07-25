@@ -18,13 +18,8 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  navMain: [
+
+  const navMain= [
     {
       title: "New Chat",
       url: "/chat",
@@ -35,12 +30,19 @@ const data = {
       url: "/library",
       icon: IconBooks,
     },
-  ],
-  
- 
+  ]
 
+interface SidebarUserData {
+  name: string
+  email: string
+  avatar?: string
 }
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+ 
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  user: SidebarUserData 
+}
+
+export function AppSidebar({ user, ...props }: AppSidebarProps) {
   return (
     <Sidebar collapsible="icon" {...props} >
       <SidebarHeader>
@@ -59,10 +61,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   )

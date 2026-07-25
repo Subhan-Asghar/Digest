@@ -201,8 +201,8 @@ const UploadDocument = ({ trigger }: { trigger: React.ReactNode }) => {
                                         <div className="flex min-w-0 flex-col gap-0.5">
                                             <p className="truncate font-medium text-[13px]">
                                                 {file.file instanceof File
-                                                    ? file.file.name
-                                                    : file.file.name}
+                                                    ? file.file.name.slice(0,30)
+                                                    : file.file.name.slice(0,30)}
                                             </p>
                                             <p className="text-muted-foreground text-xs">
                                                 {formatBytes(

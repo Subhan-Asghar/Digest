@@ -5,7 +5,7 @@ import { ModeToggle } from "@/components/theme-toggle"
 
 const Navbar = () => {
   return (
-    <div className='flex h-10 items-center justify-start bg-sidebar'>
+    <div className='sticky top-0 z-50 flex h-10 items-center justify-start bg-sidebar'>
         <SidebarTrigger />  
         <div className='flex items-center justify-center'>
         <Separator 

@@ -18,7 +18,7 @@ import { MultiSelect } from '../multi-select';
 import type { Attachment } from '@/store/useAttachment'
 import { useAttachments } from '@/store/useAttachment';
 
-const SelectDocument = () => {
+const SelectAttachment = () => {
     const { data, isLoading } = useGetDocuments()
     const {attachment,setAttachment}=useAttachments()
 
@@ -84,4 +84,4 @@ const SelectDocument = () => {
     )
 }
 
-export default SelectDocument
+export default SelectAttachment
