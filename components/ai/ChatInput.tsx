@@ -20,7 +20,7 @@ import { useAttachments } from "@/store/useAttachment";
 const SUBMITTING_TIMEOUT = 200;
 const STREAMING_TIMEOUT = 2000;
 
-const ChatInput = ({onSubmit}:{onSubmit:()=>Promise<void>}) => {
+const ChatInput = ({onSubmit}:{onSubmit:(message:string)=>Promise<void>}) => {
 
   const{attachment}=useAttachments()
 
@@ -42,13 +42,14 @@ const ChatInput = ({onSubmit}:{onSubmit:()=>Promise<void>}) => {
     
     setStatus("submitted");
 
-
-    setStatus("streaming");
-  
-    await onSubmit()
-
-    setStatus("ready");
-
+    try{
+       await onSubmit(message.text)
+       setStatus("streaming");
+        setStatus("ready");
+    }catch{
+      toast.error("Failed to start new chat")
+    }
+    
   }
 
   return (

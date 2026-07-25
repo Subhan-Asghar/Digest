@@ -41,13 +41,10 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
 
 
 
-export function AppSidebar({ user, ...props }: AppSidebarProps) {
-
-  const {setUser}=useSession()
-  setUser(user)
+export function AppSidebar() {
 
   return (
-    <Sidebar collapsible="icon" {...props} >
+    <Sidebar collapsible="icon">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>

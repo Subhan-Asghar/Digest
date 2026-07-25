@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import { useAttachments } from '@/store/useAttachment'
 import { Button } from '../ui/button'
@@ -7,7 +8,7 @@ import { XIcon, FileTextIcon } from "lucide-react"
 const DisplayAttachment = () => {
     const { attachment, removeAttachment } = useAttachments()
 
-    if (attachment.length <= 0) return
+    if (attachment.length <= 0 || !attachment) return null
 
     return (
         <div className="flex justify-start w-full gap-1.5 flex-wrap">

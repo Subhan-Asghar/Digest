@@ -1,5 +1,5 @@
 "use client"
-
+import React from "react"
 import {
   IconCreditCard,
   IconDotsVertical,
@@ -32,10 +32,14 @@ import { useSession } from "@/store/useSession"
 import { authClient } from '@/lib/auth-client';
 import { useRouter } from 'next/navigation';
 
+
 export function NavUser() {
 
-  const{user}=useSession()
+  
+const {user}=useSession()
+
   if (!user) return 
+
   const { isMobile } = useSidebar()
   const router=useRouter()
     const SignOut=async()=> {
