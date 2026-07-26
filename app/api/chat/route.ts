@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { db } from "@/db/db";
 import { generateText } from 'ai';
-import { chat} from "@/db/schema";
+import { chat,message} from "@/db/schema";
 import { google } from "@ai-sdk/google";
 import { desc, eq, and} from "drizzle-orm";
 
@@ -23,13 +23,14 @@ export async function POST(req: NextRequest) {
         }
 
         const userId = session.user.id as string
-        const { message } = await req.json() as {message:string}
+        const { initialMessage } = await req.json() as {initialMessage:string}
 
+        
         const { text } = await generateText({
             model: google('gemini-2.5-flash'),
               prompt: `You are an expert UI/UX system component. Your sole task is to generate a concise, natural, and engaging chat conversation title based on this initial user message:
 
-"${message}"
+"${initialMessage}"
 
 STRICT INSTRUCTIONS:
 1. The title MUST be exactly between 3 and 5 words long.
@@ -39,12 +40,27 @@ STRICT INSTRUCTIONS:
 5. Return ONLY the raw plain text of the title. Do NOT include quotes, periods, or markdown formatting (no asterisks, no hashtags).`,
 });
 
-        console.log(text)
+        const result=await db.transaction(async(tx)=>{
 
-        const result=await db.insert(chat).values({
+            // new chat
+            const result=await tx.insert(chat).values({
             userId:userId,
             title:text
-        }).returning()
+            }).returning()
+
+            // store thr initial message 
+            await tx.insert(message).values({
+                chatId:result[0].id,
+                userId:userId,
+                role:"user",
+                type:"text",
+                content:initialMessage
+            })
+
+            return result
+        })
+
+        
 
         return NextResponse.json({
             message: "Chat Created",

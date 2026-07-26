@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import { useGetChats } from '@/lib/queries/chat'
+import { useGetChatHistory } from '@/lib/queries/chat'
 import { Spinner } from '@/components/ui/spinner'
 import { useRouter } from 'next/navigation'
 import {
@@ -38,7 +38,7 @@ type Chat={
     createdAt: Date}
 
 const ChatHistory = () => {
-    const{ data, isLoading}= useGetChats()
+    const{ data, isLoading}= useGetChatHistory()
     const { isMobile } = useSidebar()
     const { mutateAsync, isPending } = useDeleteChat()
     const router=useRouter()

@@ -36,6 +36,20 @@
       "when": 1784949861966,
       "tag": "0004_fine_captain_britain",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1785031662016,
+      "tag": "0005_blushing_blindfold",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1785031729043,
+      "tag": "0006_premium_katie_power",
+      "breakpoints": true
     }
   ]
 }

@@ -9,14 +9,15 @@ import { useSession } from "@/store/useSession"
 const NewChat = () => {
   const { mutateAsync } = useCreateChat()
   const { user} = useSession()
+  const router = useRouter()
 
   if (!user) return null
-  const router = useRouter()
+
   const submit = async (message: string): Promise<void> => {
 
     try {
       const res = await mutateAsync(message)
-      router.replace(`/chat/${res.id}?message=${encodeURIComponent(message)}`)
+      router.replace(`/chat/${res.id}`)
     }
     catch (err) {
       console.log("Failed to create chat", err)

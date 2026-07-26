@@ -36,7 +36,7 @@ export default function PageLayout({
 
 
   if (!session?.user) {
-    router.push("/login"); 
+    router.push("/signin"); 
     return null;
   }
 

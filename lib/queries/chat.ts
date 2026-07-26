@@ -5,21 +5,21 @@ export const useCreateChat=()=>{
     const queryClient = useQueryClient();
     const {mutateAsync,isPending}= useMutation({
 
-        mutationFn:async(message:string)=>{
-            const res=await axios.post("api/chat",{message})
+        mutationFn:async(initialMessage:string)=>{
+            const res=await axios.post("api/chat",{initialMessage})
             return res.data
         },
         onSuccess:()=>{
-            queryClient.invalidateQueries({queryKey:["getChats"]})
+            queryClient.invalidateQueries({queryKey:["getChatHistory"]})
         }
     })
     return {mutateAsync,isPending}
 }
 
-export const useGetChats=()=>{
+export const useGetChatHistory=()=>{
 
      const {data,isLoading,isError} = useQuery({
-        queryKey:["getChats"],
+        queryKey:["getChatHistory"],
         queryFn:async()=>{
             const res=await axios.get("/api/chat")
             return res.data
@@ -44,8 +44,24 @@ export const useDeleteChat=()=>{
             return res.data
         },
         onSuccess:()=>{
-            queryClient.invalidateQueries({queryKey:["getChats"]})
+            queryClient.invalidateQueries({queryKey:["getChatHistory"]})
         }
     })
     return {mutateAsync,isPending}
 }
+
+
+export const useGetChat=(id:string)=>{
+     const {data,isLoading,isError} = useQuery({
+        queryKey:["getChat",id],
+        queryFn:async()=>{
+            const res=await axios.get(`/api/chat/${id}`)
+            return res.data
+        },
+        
+        staleTime:Infinity
+    })
+
+    return {data,isLoading,isError}
+}
+  

@@ -137,6 +137,7 @@ export const message=pgTable("message",{
   chatId:uuid("chatId").notNull().references(() => chat.id, { onDelete: "cascade" }),
   role: roleEnum('role').notNull(),
   content:text("content").notNull(),
+  type:text("type").notNull(),
   createdAt:timestamp("createdAt").defaultNow()
 
 })

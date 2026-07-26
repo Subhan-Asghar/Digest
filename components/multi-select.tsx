@@ -110,10 +110,10 @@ interface MultiSelectGroup {
  */
 interface MultiSelectProps
 	extends Omit<
-			React.ButtonHTMLAttributes<HTMLButtonElement>,
-			"animationConfig"
-		>,
-		VariantProps<typeof multiSelectVariants> {
+		React.ButtonHTMLAttributes<HTMLButtonElement>,
+		"animationConfig"
+	>,
+	VariantProps<typeof multiSelectVariants> {
 	/**
 	 * An array of option objects or groups to be displayed in the multi-select component.
 	 */
@@ -140,7 +140,7 @@ interface MultiSelectProps
 	animation?: number;
 
 
-    selectionLimit?:number,
+	selectionLimit?: number,
 
 	/**
 	 * Advanced animation configuration for different component parts.
@@ -224,27 +224,27 @@ interface MultiSelectProps
 	 * Can be boolean true for default responsive behavior or an object for custom configuration.
 	 */
 	responsive?:
-		| boolean
-		| {
-				/** Configuration for mobile devices (< 640px) */
-				mobile?: {
-					maxCount?: number;
-					hideIcons?: boolean;
-					compactMode?: boolean;
-				};
-				/** Configuration for tablet devices (640px - 1024px) */
-				tablet?: {
-					maxCount?: number;
-					hideIcons?: boolean;
-					compactMode?: boolean;
-				};
-				/** Configuration for desktop devices (> 1024px) */
-				desktop?: {
-					maxCount?: number;
-					hideIcons?: boolean;
-					compactMode?: boolean;
-				};
-		  };
+	| boolean
+	| {
+		/** Configuration for mobile devices (< 640px) */
+		mobile?: {
+			maxCount?: number;
+			hideIcons?: boolean;
+			compactMode?: boolean;
+		};
+		/** Configuration for tablet devices (640px - 1024px) */
+		tablet?: {
+			maxCount?: number;
+			hideIcons?: boolean;
+			compactMode?: boolean;
+		};
+		/** Configuration for desktop devices (> 1024px) */
+		desktop?: {
+			maxCount?: number;
+			hideIcons?: boolean;
+			compactMode?: boolean;
+		};
+	};
 
 	/**
 	 * Minimum width for the component.
@@ -334,7 +334,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
 			deduplicateOptions = false,
 			resetOnDefaultValueChange = true,
 			closeOnSelect = false,
-            selectionLimit,
+			selectionLimit,
 			...props
 		},
 		ref
@@ -561,11 +561,10 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
 					`MultiSelect: Duplicate option values ${action}: ${duplicates.join(
 						", "
 					)}. ` +
-						`${
-							deduplicateOptions
-								? "Duplicates have been removed automatically."
-								: "This may cause unexpected behavior. Consider setting 'deduplicateOptions={true}' or ensure all option values are unique."
-						}`
+					`${deduplicateOptions
+						? "Duplicates have been removed automatically."
+						: "This may cause unexpected behavior. Consider setting 'deduplicateOptions={true}' or ensure all option values are unique."
+					}`
 				);
 			}
 			return deduplicateOptions ? uniqueOptions : allOptions;
@@ -628,20 +627,20 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
 
 			let newSelectedValues: string[];
 
-if (selectedValues.includes(optionValue)) {
-    newSelectedValues = selectedValues.filter(
-        value => value !== optionValue
-    );
-} else {
-    if (
-        selectionLimit !== undefined &&
-        selectedValues.length >= selectionLimit
-    ) {
-        return;
-    }
+			if (selectedValues.includes(optionValue)) {
+				newSelectedValues = selectedValues.filter(
+					value => value !== optionValue
+				);
+			} else {
+				if (
+					selectionLimit !== undefined &&
+					selectedValues.length >= selectionLimit
+				) {
+					return;
+				}
 
-    newSelectedValues = [...selectedValues, optionValue];
-}
+				newSelectedValues = [...selectedValues, optionValue];
+			}
 
 			setSelectedValues(newSelectedValues);
 			onValueChange(newSelectedValues);
@@ -677,9 +676,9 @@ if (selectedValues.includes(optionValue)) {
 			if (selectedValues.length === allOptions.length) {
 				handleClear();
 			} else {
-const allValues = allOptions
-    .slice(0, selectionLimit ?? allOptions.length)
-    .map(option => option.value);				setSelectedValues(allValues);
+				const allValues = allOptions
+					.slice(0, selectionLimit ?? allOptions.length)
+					.map(option => option.value); setSelectedValues(allValues);
 				onValueChange(allValues);
 			}
 
@@ -772,8 +771,7 @@ const allValues = allOptions
 					).length;
 
 					announce(
-						`${filteredCount} option${
-							filteredCount === 1 ? "" : "s"
+						`${filteredCount} option${filteredCount === 1 ? "" : "s"
 						} found for "${searchValue}"`
 					);
 				}
@@ -803,12 +801,11 @@ const allValues = allOptions
 					<div id={selectedCountId} className="sr-only" aria-live="polite">
 						{selectedValues.length === 0
 							? "No options selected"
-							: `${selectedValues.length} option${
-									selectedValues.length === 1 ? "" : "s"
-							  } selected: ${selectedValues
-									.map((value) => getOptionByValue(value)?.label)
-									.filter(Boolean)
-									.join(", ")}`}
+							: `${selectedValues.length} option${selectedValues.length === 1 ? "" : "s"
+							} selected: ${selectedValues
+								.map((value) => getOptionByValue(value)?.label)
+								.filter(Boolean)
+								.join(", ")}`}
 					</div>
 
 					<PopoverTrigger asChild>
@@ -822,9 +819,8 @@ const allValues = allOptions
 							aria-haspopup="listbox"
 							aria-controls={isPopoverOpen ? listboxId : undefined}
 							aria-describedby={`${triggerDescriptionId} ${selectedCountId}`}
-							aria-label={`Multi-select: ${selectedValues.length} of ${
-								getAllOptions().length
-							} options selected. ${placeholder}`}
+							aria-label={`Multi-select: ${selectedValues.length} of ${getAllOptions().length
+								} options selected. ${placeholder}`}
 							className={cn(
 								"flex p-1 rounded-md border min-h-10 h-auto items-center justify-between bg-inherit hover:bg-inherit [&_svg]:pointer-events-auto",
 								autoSize ? "w-auto" : "w-full",
@@ -850,8 +846,8 @@ const allValues = allOptions
 										style={
 											singleLine
 												? {
-														paddingBottom: "4px",
-												  }
+													paddingBottom: "4px",
+												}
 												: {}
 										}>
 										{selectedValues
@@ -880,19 +876,18 @@ const allValues = allOptions
 															getBadgeAnimationClass(),
 															multiSelectVariants({ variant }),
 															customStyle?.gradient &&
-																"text-white border-transparent",
+															"text-white border-transparent",
 															responsiveSettings.compactMode &&
-																"text-xs px-1.5 py-0.5",
+															"text-xs px-1.5 py-0.5",
 															screenSize === "mobile" &&
-																"max-w-[120px] truncate",
+															"max-w-[120px] truncate",
 															singleLine && "flex-shrink-0 whitespace-nowrap",
 															"[&>svg]:pointer-events-auto"
 														)}
 														style={{
 															...badgeStyle,
-															animationDuration: `${
-																animationConfig?.duration || animation
-															}s`,
+															animationDuration: `${animationConfig?.duration || animation
+																}s`,
 															animationDelay: `${animationConfig?.delay || 0}s`,
 														}}>
 														{IconComponent && !responsiveSettings.hideIcons && (
@@ -900,7 +895,7 @@ const allValues = allOptions
 																className={cn(
 																	"h-4 w-4 mr-2",
 																	responsiveSettings.compactMode &&
-																		"h-3 w-3 mr-1",
+																	"h-3 w-3 mr-1",
 																	customStyle?.iconColor && "text-current"
 																)}
 																{...(customStyle?.iconColor && {
@@ -937,7 +932,7 @@ const allValues = allOptions
 																className={cn(
 																	"h-3 w-3",
 																	responsiveSettings.compactMode &&
-																		"h-2.5 w-2.5"
+																	"h-2.5 w-2.5"
 																)}
 															/>
 														</div>
@@ -952,19 +947,17 @@ const allValues = allOptions
 													getBadgeAnimationClass(),
 													multiSelectVariants({ variant }),
 													responsiveSettings.compactMode &&
-														"text-xs px-1.5 py-0.5",
+													"text-xs px-1.5 py-0.5",
 													singleLine && "flex-shrink-0 whitespace-nowrap",
 													"[&>svg]:pointer-events-auto"
 												)}
 												style={{
-													animationDuration: `${
-														animationConfig?.duration || animation
-													}s`,
+													animationDuration: `${animationConfig?.duration || animation
+														}s`,
 													animationDelay: `${animationConfig?.delay || 0}s`,
 												}}>
-												{`+ ${
-													selectedValues.length - responsiveSettings.maxCount
-												} more`}
+												{`+ ${selectedValues.length - responsiveSettings.maxCount
+													} more`}
 												<XCircle
 													className={cn(
 														"ml-2 h-4 w-4 cursor-pointer",
@@ -1074,9 +1067,8 @@ const allValues = allOptions
 												selectedValues.length ===
 												getAllOptions().filter((opt) => !opt.disabled).length
 											}
-											aria-label={`Select all ${
-												getAllOptions().length
-											} options`}
+											aria-label={`Select all ${getAllOptions().length
+												} options`}
 											className="cursor-pointer">
 											<div
 												className={cn(
@@ -1104,27 +1096,26 @@ const allValues = allOptions
 									filteredOptions.map((group) => (
 										<CommandGroup key={group.heading} heading={group.heading}>
 											{group.options.map((option) => {
-    const isSelected = selectedValues.includes(option.value);
+												const isSelected = selectedValues.includes(option.value);
 
-    const disabledByLimit =
-        selectionLimit !== undefined &&
-        selectedValues.length >= selectionLimit &&
-        !isSelected;
+												const disabledByLimit =
+													selectionLimit !== undefined &&
+													selectedValues.length >= selectionLimit &&
+													!isSelected;
 
-    return (
+												return (
 													<CommandItem
 														key={option.value}
 														onSelect={() => toggleOption(option.value)}
 														role="option"
 														aria-selected={isSelected}
-aria-disabled={option.disabled || disabledByLimit}														aria-label={`${option.label}${
-															isSelected ? ", selected" : ", not selected"
-														}${option.disabled ? ", disabled" : ""}`}
+														aria-disabled={option.disabled || disabledByLimit} aria-label={`${option.label}${isSelected ? ", selected" : ", not selected"
+															}${option.disabled ? ", disabled" : ""}`}
 														className={cn(
-    "cursor-pointer",
-    (option.disabled || disabledByLimit) &&
-        "opacity-50 cursor-not-allowed"
-)}
+															"cursor-pointer",
+															(option.disabled || disabledByLimit) &&
+															"opacity-50 cursor-not-allowed"
+														)}
 														disabled={option.disabled || disabledByLimit}>
 														<div
 															className={cn(
@@ -1151,27 +1142,26 @@ aria-disabled={option.disabled || disabledByLimit}														aria-label={`${o
 								) : (
 									<CommandGroup>
 										{filteredOptions.map((option) => {
-    const isSelected = selectedValues.includes(option.value);
+											const isSelected = selectedValues.includes(option.value);
 
-    const disabledByLimit =
-        selectionLimit !== undefined &&
-        selectedValues.length >= selectionLimit &&
-        !isSelected;
+											const disabledByLimit =
+												selectionLimit !== undefined &&
+												selectedValues.length >= selectionLimit &&
+												!isSelected;
 
-    return (
+											return (
 												<CommandItem
 													key={option.value}
 													onSelect={() => toggleOption(option.value)}
 													role="option"
 													aria-selected={isSelected}
-aria-disabled={option.disabled || disabledByLimit}													aria-label={`${option.label}${
-														isSelected ? ", selected" : ", not selected"
-													}${option.disabled ? ", disabled" : ""}`}
+													aria-disabled={option.disabled || disabledByLimit} aria-label={`${option.label}${isSelected ? ", selected" : ", not selected"
+														}${option.disabled ? ", disabled" : ""}`}
 													className={cn(
-    "cursor-pointer",
-    (option.disabled || disabledByLimit) &&
-        "opacity-50 cursor-not-allowed"
-)}
+														"cursor-pointer",
+														(option.disabled || disabledByLimit) &&
+														"opacity-50 cursor-not-allowed"
+													)}
 													disabled={option.disabled || disabledByLimit}>
 													<div
 														className={cn(
