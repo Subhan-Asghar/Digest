@@ -51,6 +51,7 @@ export const useDeleteChat=()=>{
 }
 
 
+
 export const useGetChat=(id:string)=>{
      const {data,isLoading,isError} = useQuery({
         queryKey:["getChat",id],
@@ -65,3 +66,15 @@ export const useGetChat=(id:string)=>{
     return {data,isLoading,isError}
 }
   
+export const useSendMessage=()=>{
+    const queryClient = useQueryClient();
+    const {mutateAsync,isPending,isError}= useMutation({
+
+        mutationFn:async({id,message}:{id:string,message:string})=>{
+            const res=await axios.post(`/api/chat/${id}`,{message})
+            return res.data
+        },
+       
+    })
+    return {mutateAsync,isPending,isError}
+}

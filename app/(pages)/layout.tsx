@@ -46,7 +46,9 @@ export default function PageLayout({
         <AppSidebar />
         <div className="flex flex-1 flex-col min-h-screen w-full">
           <Navbar />
-          <main className="flex-1 overflow-y-auto">{children}</main>
+          <main className="flex-1 flex flex-col overflow-hidden">
+  {children}
+</main>
         </div>
       </SidebarProvider>
     </TooltipProvider>
