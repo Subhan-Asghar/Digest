@@ -194,15 +194,15 @@ const UploadDocument = ({ trigger }: { trigger: React.ReactNode }) => {
                                     className="flex items-center justify-between gap-2 rounded-lg border bg-background p-2 pe-3"
                                     key={file.id}
                                 >
-                                    <div className="flex items-center gap-3 overflow-hidden">
+                                    <div className="flex items-center gap-3 overflow-hidden max-w-xs">
                                         <div className="flex aspect-square size-10 shrink-0 items-center justify-center rounded border">
                                             {getFileIcon(file)}
                                         </div>
                                         <div className="flex min-w-0 flex-col gap-0.5">
                                             <p className="truncate font-medium text-[13px]">
                                                 {file.file instanceof File
-                                                    ? file.file.name.slice(0,30)
-                                                    : file.file.name.slice(0,30)}
+                                                    ? file.file.name
+                                                    : file.file.name}
                                             </p>
                                             <p className="text-muted-foreground text-xs">
                                                 {formatBytes(

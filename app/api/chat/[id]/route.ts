@@ -166,7 +166,7 @@ export async function POST(
 
 
         const result = streamText({
-            model: google("gemini-2.5-flash"),
+            model: google("gemini-3.1-flash-lite-preview"),
             system: contextText ? systemPrompt : "You are a helpful assistant.",
             maxRetries: 0,
             messages: formattedMessages,

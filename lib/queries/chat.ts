@@ -59,8 +59,6 @@ export const useGetChat=(id:string)=>{
             const res=await axios.get(`/api/chat/${id}`)
             return res.data
         },
-        
-        staleTime:Infinity
     })
 
     return {data,isLoading,isError}

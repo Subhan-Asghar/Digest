@@ -882,7 +882,8 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
 															screenSize === "mobile" &&
 															"max-w-[120px] truncate",
 															singleLine && "flex-shrink-0 whitespace-nowrap",
-															"[&>svg]:pointer-events-auto"
+															"[&>svg]:pointer-events-auto",
+															"max-w-2xs"
 														)}
 														style={{
 															...badgeStyle,
@@ -905,6 +906,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
 														)}
 														<span
 															className={cn(
+																"truncate",
 																screenSize === "mobile" && "truncate"
 															)}>
 															{option.label}
@@ -1035,6 +1037,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
 						<Command>
 							{searchable && (
 								<CommandInput
+									
 									placeholder="Search options..."
 									onKeyDown={handleInputKeyDown}
 									value={searchValue}
@@ -1158,7 +1161,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
 													aria-disabled={option.disabled || disabledByLimit} aria-label={`${option.label}${isSelected ? ", selected" : ", not selected"
 														}${option.disabled ? ", disabled" : ""}`}
 													className={cn(
-														"cursor-pointer",
+														"cursor-pointer max-w-xs",
 														(option.disabled || disabledByLimit) &&
 														"opacity-50 cursor-not-allowed"
 													)}
@@ -1179,7 +1182,9 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
 															aria-hidden="true"
 														/>
 													)}
-													<span>{option.label}</span>
+													<span
+													className="truncate "
+													>{option.label}</span>
 												</CommandItem>
 											);
 										})}

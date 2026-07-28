@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
 
         
         const { text } = await generateText({
-            model: google('gemini-2.5-flash'),
+            model: google('gemini-3.1-flash-lite-preview'),
               prompt: `You are an expert UI/UX system component. Your sole task is to generate a concise, natural, and engaging chat conversation title based on this initial user message:
 
 "${initialMessage}"

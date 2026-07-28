@@ -12,7 +12,6 @@ import {
   ConversationContent,
   ConversationScrollButton,
 } from "@/components/ai-elements/conversation";
-import { RefreshCcwIcon, CopyIcon } from "lucide-react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, UIMessage } from "ai";
 import { useAttachments } from "@/store/useAttachment";
@@ -24,7 +23,14 @@ interface Props {
 }
 
 const ChatWindow = ({ id, initialMessages }: Props) => {
+
   const { attachment } = useAttachments();
+
+  let firstMessage:UIMessage=initialMessages[0]
+
+  if (initialMessages.length==1){
+    initialMessages=[]
+  }
 
   const { messages, sendMessage, regenerate } = useChat({
     transport: new DefaultChatTransport({
@@ -33,6 +39,13 @@ const ChatWindow = ({ id, initialMessages }: Props) => {
     messages: initialMessages,
   });
 
+  useEffect(()=>{
+
+    if(initialMessages.length==0 && firstMessage.parts[0].type=="text"){
+       handleSubmit(firstMessage.parts[0].text,true)
+    }
+
+},[])
   const handleSubmit = async (textMessage: string,generateOnly=false) => {
     await sendMessage(
       { text: textMessage },

@@ -35,10 +35,10 @@ const ChatInput = ({onSubmit}:{onSubmit:(message:string)=>Promise<void>}) => {
     if (!(hasText)) {
       return;
     }
-    if(attachment.length<=0){
-      toast.warning("atleast select the one document ")
-      return 
-    }
+    // if(attachment.length<=0){
+    //   toast.warning("atleast select the one document ")
+    //   return 
+    // }
     
     setStatus("submitted");
 

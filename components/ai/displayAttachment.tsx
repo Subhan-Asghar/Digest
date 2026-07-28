@@ -13,13 +13,13 @@ const DisplayAttachment = () => {
     return (
         <div className="flex justify-start w-full gap-1.5 flex-wrap">
             {attachment.map((file, id) => (
-                <div className="flex items-center justify-between gap-1.5 rounded-md border bg-background p-1 pe-2" key={id}>
+                <div className="flex items-center justify-between gap-1.5 rounded-md border bg-background p-1 pe-2 max-w-xs" key={id}>
                     <div className="flex items-center gap-2 overflow-hidden">
                         <div className="flex aspect-square size-7 shrink-0 items-center justify-center rounded border">
                             <FileTextIcon className="size-3.5" />
                         </div>
                         <div className="flex min-w-0 flex-col">
-                            <p className="truncate font-medium text-[11px] leading-tight">
+                            <p className="font-medium text-[11px] leading-tight truncate ">
                                 {file.label}
                             </p>
                         </div>
