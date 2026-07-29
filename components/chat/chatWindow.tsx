@@ -38,10 +38,9 @@ const ChatWindow = ({ id, initialMessages }: Props) => {
     }),
     messages: initialMessages,
   });
-
   useEffect(()=>{
 
-    if(initialMessages.length==0 && firstMessage.parts[0].type=="text"){
+    if(messages.length==0 && firstMessage.parts[0].type=="text"){
        handleSubmit(firstMessage.parts[0].text,true)
     }
 
@@ -60,7 +59,7 @@ const ChatWindow = ({ id, initialMessages }: Props) => {
   };
 
   return (
-<div className="flex h-full flex-col overflow-hidden">
+<div className="flex h-full flex-col ">
   <div className="flex-1 overflow-y-auto">
           <Conversation>
           <ConversationContent>

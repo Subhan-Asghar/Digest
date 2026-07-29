@@ -18,7 +18,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import {toast} from "sonner"
+import { toast } from "sonner"
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -30,74 +30,78 @@ import {
 } from "@/components/ui/sidebar"
 
 import { useDeleteChat } from '@/lib/queries/chat'
+import { useSession } from '@/store/useSession'
 
-type Chat={
-    id: string;
-    userId: string;
-    title: string
-    createdAt: Date}
+type Chat = {
+  id: string;
+  userId: string;
+  title: string
+  createdAt: Date
+}
 
 const ChatHistory = () => {
-    const{ data, isLoading}= useGetChatHistory()
-    const { isMobile } = useSidebar()
-    const { mutateAsync, isPending } = useDeleteChat()
-    const router=useRouter()
-    if(isLoading){
-        return (
-            <div className='flex justify-center pt-2'>
-                <Spinner/>
-            </div>
-        )
+    const {user}=useSession()
+    const { data, isLoading } = useGetChatHistory({enabled: !!user})  
+  const { isMobile } = useSidebar()
+  const { mutateAsync, isPending } = useDeleteChat()
+  const router = useRouter()
+  if (isLoading) {
+    return (
+      <div className='flex justify-center pt-2'>
+        <Spinner />
+      </div>
+    )
+  }
+
+  const handleDelete = async (id: string) => {
+    try {
+      const res = mutateAsync(id)
+      toast.promise(res, {
+        loading: "Deleting chat...",
+        success: "Chat deleted successfully",
+        error: "Error deleting chat"
+      })
+      await res
+
+    } catch (error) {
+      console.error('Error deleting chat:', error)
     }
+  }
 
-    const handleDelete = async (id:string) => {
-        try {
-            const res=mutateAsync(id)
-            toast.promise(res,{
-                loading:"Deleting chat...",
-                success:"Chat deleted successfully",
-                error:"Error deleting chat"
-            })  
-            await res
 
-        } catch (error) {
-            console.error('Error deleting chat:', error)
-        }
-    }
-
-     
   return (
-   <>
-   {data &&
-    (
-    <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Chat History</SidebarGroupLabel>
-      <SidebarMenu>
-        {data.data.map((item:Chat) => (
-          <SidebarMenuItem key={item.id}>
-            <SidebarMenuButton 
-            className='cursor-pointer'
-            onClick={()=>router.push(`/chat/${item.id}`)}
-            asChild>
-                <span
-                >{item.title}</span>
-            </SidebarMenuButton>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuAction
-                  showOnHover
-                  className="rounded-sm data-[state=open]:bg-accent"
-                >
-                  <IconDots />
-                  <span className="sr-only">More</span>
-                </SidebarMenuAction>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                className="w-24 rounded-lg"
-                side={isMobile ? "bottom" : "right"}
-                align={isMobile ? "end" : "start"}
-              >
-                {/* <DropdownMenuItem>
+    <>
+
+      <SidebarGroup className="group-data-[collapsible=icon]:hidden">
+        <SidebarGroupLabel>Chat History</SidebarGroupLabel>
+        {data &&
+          (
+            <SidebarMenu className='gap-2'>
+              {data.data.map((item: Chat) => (
+                <SidebarMenuItem key={item.id}>
+                  <SidebarMenuButton
+                    className='cursor-pointer'
+                    onClick={() => router.push(`/chat/${item.id}`)}
+                    asChild>
+                    <span
+                    >{item.title}</span>
+                  </SidebarMenuButton>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <SidebarMenuAction
+                        showOnHover
+                        className="rounded-sm data-[state=open]:bg-accent"
+                      >
+                        <IconDots />
+                        <span className="sr-only">More</span>
+                      </SidebarMenuAction>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                      className="w-24 rounded-lg"
+                      side={isMobile ? "bottom" : "right"}
+                      align={isMobile ? "end" : "start"}
+                    >
+                      {/* <DropdownMenuItem>
                   <IconFolder />
                   <span>Open</span>
                 </DropdownMenuItem>
@@ -106,28 +110,29 @@ const ChatHistory = () => {
                   <span>Share</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator /> */}
-                <DropdownMenuItem 
-                onClick={()=>handleDelete(item.id)}
-                variant="destructive">
-                 <IconTrash/>
-                 <span>Delete</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </SidebarMenuItem>
-        ))}
-        
-        {/* <SidebarMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => handleDelete(item.id)}
+                        variant="destructive">
+                        <IconTrash />
+                        <span>Delete</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </SidebarMenuItem>
+              ))}
+
+              {/* <SidebarMenuItem>
           <SidebarMenuButton className="text-sidebar-foreground/70">
             <IconDots className="text-sidebar-foreground/70" />
             <span>More</span>
           </SidebarMenuButton>
         </SidebarMenuItem> */}
-      </SidebarMenu>
-    </SidebarGroup>
-    )
-   }
-   </>
+            </SidebarMenu>
+          )
+        }
+      </SidebarGroup>
+
+    </>
   )
 }
 

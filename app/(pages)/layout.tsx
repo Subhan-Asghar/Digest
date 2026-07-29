@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { useRouter } from "next/navigation";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -15,7 +14,7 @@ export default function PageLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const router = useRouter();
+
   const { user, setUser } = useSession();
   const { data: session, isPending } = authClient.useSession();
 
@@ -34,19 +33,13 @@ export default function PageLayout({
     );
   }
 
-
-  if (!session?.user) {
-    router.push("/signin"); 
-    return null;
-  }
-
   return (
     <TooltipProvider delayDuration={0}>
       <SidebarProvider>
         <AppSidebar />
         <div className="flex flex-1 flex-col min-h-screen w-full">
           <Navbar />
-          <main className="flex-1 flex flex-col overflow-hidden">
+         <main className="relative flex-1 overflow-hidden">
   {children}
 </main>
         </div>

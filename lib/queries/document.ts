@@ -16,7 +16,7 @@ export const useUploadDocument=()=>{
     return {mutateAsync,isPending}
 }
 
-export const useGetDocuments=()=>{
+export const useGetDocuments=(options?: { enabled?: boolean })=>{
 
      const {data,isLoading,isError} = useQuery({
         queryKey:["getDocuments"],
@@ -25,7 +25,8 @@ export const useGetDocuments=()=>{
             return res.data
         },
         
-        staleTime:Infinity
+        staleTime:Infinity,
+        enabled:options?.enabled
     })
 
     return {data,isLoading,isError}

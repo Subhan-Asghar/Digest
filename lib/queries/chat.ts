@@ -16,7 +16,7 @@ export const useCreateChat=()=>{
     return {mutateAsync,isPending}
 }
 
-export const useGetChatHistory=()=>{
+export const useGetChatHistory=( options?: { enabled?: boolean })=>{
 
      const {data,isLoading,isError} = useQuery({
         queryKey:["getChatHistory"],
@@ -24,8 +24,8 @@ export const useGetChatHistory=()=>{
             const res=await axios.get("/api/chat")
             return res.data
         },
-        
-        staleTime:Infinity
+        staleTime:Infinity,
+        enabled:options?.enabled
     })
 
     return {data,isLoading,isError}

@@ -15,9 +15,10 @@ import { Spinner } from '../ui/spinner';
 import { MultiSelect } from '../multi-select';
 import type { Attachment } from '@/store/useAttachment'
 import { useAttachments } from '@/store/useAttachment';
-
+import { useSession } from '@/store/useSession';
 const SelectAttachment = () => {
-    const { data, isLoading } = useGetDocuments()
+    const {user}=useSession()
+    const { data, isLoading } = useGetDocuments({enabled: !!user})
     const {attachment,setAttachment}=useAttachments()
 
     const values: Attachment[] = useMemo(() => {
