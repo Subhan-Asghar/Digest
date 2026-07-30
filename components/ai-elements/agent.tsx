@@ -103,8 +103,12 @@ export const AgentTool = memo(
         {...props}
       >
         <AccordionTrigger className="px-3 py-2 text-sm hover:no-underline">
-          {tool.description ?? "No description"}
-        </AccordionTrigger>
+  {typeof tool.description === "function"
+    ? tool.description({
+        context: undefined,
+      })
+    : tool.description ?? "No description"}
+</AccordionTrigger>
         <AccordionContent className="px-3 pb-3">
           <div className="rounded-md bg-muted/50">
             <CodeBlock code={JSON.stringify(schema, null, 2)} language="json" />
