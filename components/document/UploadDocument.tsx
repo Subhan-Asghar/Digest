@@ -72,13 +72,13 @@ const getFileIcon = (file: { file: File | { type: string; name: string } }) => {
     // }
     return <FileIcon className="size-4 opacity-60" />;
 };
-
+import {useSession} from "@/store/useSession"
 
 const UploadDocument = ({ trigger }: { trigger: React.ReactNode }) => {
     const maxSize = 10 * 1024 * 1024; // 10MB default
     const maxFiles = 5;
     const { mutateAsync } = useUploadDocument()
-
+    const {user}=useSession()
     const [
         { files, isDragging, errors },
         {
@@ -100,7 +100,10 @@ const UploadDocument = ({ trigger }: { trigger: React.ReactNode }) => {
 
     const submit = async () => {
         try {
-
+            if(!user){
+                window.location.href="/signin"
+                return 
+            }
             const data = new FormData()
             files.forEach((item) => {
                 if (item.file instanceof File) {
