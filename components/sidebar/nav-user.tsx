@@ -31,15 +31,16 @@ import {
 import { useSession } from "@/store/useSession"
 import { authClient } from '@/lib/auth-client';
 import { useRouter } from 'next/navigation';
-import { Spinner } from "@/components/ui/spinner";
-
+import { UserIcon } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { a } from "shiki/dist/langs-bundle-full-WSWgUeqW.mjs"
 
 export function NavUser() {
 
-  const { user} = useSession();
-  
+  const { user } = useSession();
 
 
+  const { state } = useSidebar();
   const { isMobile } = useSidebar()
   const router = useRouter()
   const SignOut = async () => {
@@ -119,13 +120,21 @@ export function NavUser() {
           </DropdownMenu>
 
         ) : (
-          <SidebarMenuButton
-            size="lg"
-            className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-            onClick={() => { router.push("/signin") }}
-          >
-            Login
-          </SidebarMenuButton>
+          <>
+          
+            {state === "expanded"?(
+              <a href="/signin">
+                <Button className="w-full mb-1" variant="outline">
+                  Sign In
+                </Button>
+              </a>
+                
+            ):(
+              <Avatar className="h-8 w-8 rounded-lg items-center justify-center">
+                <UserIcon className="h-4 w-4" />
+              </Avatar>
+            )}
+            </>
         )}
 
 
