@@ -4,6 +4,13 @@ import * as schema from "@/db/schema";
 import { db } from "@/db/db";
 import { nextCookies } from "better-auth/next-js";
 
+if (! process.env.GOOGLE_CLIENT_ID){
+    throw new Error("GOOGLE_CLIENT_ID is not defined in the environment variables.");
+}
+
+if (! process.env.GOOGLE_CLIENT_SECRET){
+    throw new Error("GOOGLE_CLIENT_SECRET is not defined in the environment variables.");
+}
 
 export const auth = betterAuth({
     database: drizzleAdapter(db, {
@@ -15,10 +22,10 @@ export const auth = betterAuth({
     enabled: true, 
   }, 
    plugins: [nextCookies()],
-  socialProviders: { 
-    // github: { 
-    //   clientId: process.env.GITHUB_CLIENT_ID as string, 
-    //   clientSecret: process.env.GITHUB_CLIENT_SECRET as string, 
-    // }, 
-  }, 
+   socialProviders: {
+        google: { 
+            clientId: process.env.GOOGLE_CLIENT_ID as string, 
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string, 
+        }, 
+    },
 })

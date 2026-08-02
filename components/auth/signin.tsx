@@ -1,10 +1,10 @@
 "use client"
-import React from 'react'
+import React ,{ useEffect } from 'react'
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Controller,useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import { toast } from "sonner"
-
+import GoogleAuth from "@/components/auth/googleAuth"
 import { Button } from "@/components/ui/button"
 
 import {
@@ -49,110 +49,110 @@ const Signin = ({
     },
   })
 
-  const router=useRouter()
+  const router = useRouter()
 
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsloading(true);
 
- async function onSubmit(values: z.infer<typeof formSchema>) {
-  setIsloading(true);
+    try {
+      const result = authClient.signIn.email(values);
+      const toastId = toast.loading("Logging in");
 
-  try {
-    const result = authClient.signIn.email(values);
-    const toastId = toast.loading("Logging in");
+      const { data, error } = await result;
+      toast.dismiss(toastId);
 
-    const { data, error } = await result;
-    toast.dismiss(toastId);
+      if (error || !data) {
+        toast.error(error?.message || "Something went wrong. Please try again.");
+        return;
+      }
 
-    if (error || !data) {
-      toast.error(error?.message || "Something went wrong. Please try again.");
-      return;
+      router.push("/chat");
+    } finally {
+      setIsloading(false);
     }
-
-    router.push("/chat");
-  } finally {
-    setIsloading(false);
   }
-}
 
   return (
     <>
       <div className={cn("flex flex-col gap-6", className)} {...props}>
         <Card>
           <CardHeader>
-            <CardTitle>Login to your account</CardTitle>
+            <CardTitle>Sign in to your account</CardTitle>
             <CardDescription>
-              Enter your email below to login to your account
+              Enter your email below to sign in to your account
             </CardDescription>
           </CardHeader>
           <CardContent>
-   
-  <form
-    onSubmit={form.handleSubmit(onSubmit)}
-    className="space-y-6"
-  >
-    <FieldGroup>
-      <Controller
-        name="email"
-        control={form.control}
-        render={({ field, fieldState }) => (
-          <Field data-invalid={fieldState.invalid}>
-            <FieldLabel htmlFor="email">Email</FieldLabel>
 
-            <Input
-              {...field}
-              id="email"
-              type="email"
-              placeholder="example@xyz.com"
-              autoComplete="email"
-              aria-invalid={fieldState.invalid}
-            />
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-6"
+            >
+              <FieldGroup>
+                <Controller
+                  name="email"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor="email">Email</FieldLabel>
 
-            {fieldState.invalid && (
-              <FieldError errors={[fieldState.error]} />
-            )}
-          </Field>
-        )}
-      />
+                      <Input
+                        {...field}
+                        id="email"
+                        type="email"
+                        placeholder="example@xyz.com"
+                        autoComplete="email"
+                        aria-invalid={fieldState.invalid}
+                      />
 
-      <Controller
-        name="password"
-        control={form.control}
-        render={({ field, fieldState }) => (
-          <Field data-invalid={fieldState.invalid}>
-            <FieldLabel htmlFor="password">Password</FieldLabel>
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
 
-            <Input
-              {...field}
-              id="password"
-              type="password"
-              placeholder="********"
-              autoComplete="current-password"
-              aria-invalid={fieldState.invalid}
-            />
+                <Controller
+                  name="password"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor="password">Password</FieldLabel>
 
-            {fieldState.invalid && (
-              <FieldError errors={[fieldState.error]} />
-            )}
-          </Field>
-        )}
-      />
-    </FieldGroup>
+                      <Input
+                        {...field}
+                        id="password"
+                        type="password"
+                        placeholder="********"
+                        autoComplete="current-password"
+                        aria-invalid={fieldState.invalid}
+                      />
 
-    <Button
-      disabled={isloading}
-      className="w-full"
-      type="submit"
-    >
-      Login
-    </Button>
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+              </FieldGroup>
 
-    <FieldDescription className="text-center">
-      Don't have an account?{" "}
-      <a href="/signup" className="underline">
-        Sign up
-      </a>
-    </FieldDescription>
-  </form>
-
+              <Button
+                disabled={isloading}
+                className="w-full"
+                type="submit"
+              >
+                Sign In
+              </Button>
+            </form>
+            <div className="flex flex-col gap-2 mt-4">
+               <GoogleAuth errorRedirect="/signin" />
+            <FieldDescription className="text-center">
+              Don't have an account?{" "}
+              <a href="/signup" className="underline">
+                Sign up
+              </a>
+            </FieldDescription>
+            </div>
           </CardContent>
         </Card>
       </div>

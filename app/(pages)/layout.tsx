@@ -35,7 +35,7 @@ export default function PageLayout({
 
   return (
     <TooltipProvider delayDuration={0}>
-      <SidebarProvider>
+      <SidebarProvider defaultOpen={false}>
         <AppSidebar />
         <div className="flex flex-1 flex-col min-h-screen w-full">
           <Navbar />
