@@ -6,7 +6,7 @@ export const useCreateChat=()=>{
     const {mutateAsync,isPending}= useMutation({
 
         mutationFn:async(initialMessage:string)=>{
-            const res=await axios.post("api/chat",{initialMessage})
+            const res=await axios.post("/api/chat",{initialMessage})
             return res.data
         },
         onSuccess:()=>{

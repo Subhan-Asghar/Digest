@@ -33,7 +33,6 @@ import { authClient } from '@/lib/auth-client';
 import { useRouter } from 'next/navigation';
 import { UserIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { a } from "shiki/dist/langs-bundle-full-WSWgUeqW.mjs"
 
 export function NavUser() {
 
@@ -63,7 +62,7 @@ export function NavUser() {
                 size="lg"
                 className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
               >
-                <Avatar className="h-8 w-8 rounded-lg grayscale">
+                <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage src={user.image || ""} alt={user.name} />
                   <AvatarFallback className="rounded-lg">{user.name.charAt(0).toUpperCase()}</AvatarFallback>
                 </Avatar>

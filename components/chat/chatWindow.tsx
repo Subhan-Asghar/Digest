@@ -1,5 +1,5 @@
 "use client";
-import React, { Fragment,useEffect } from "react";
+import React, { Fragment, useEffect, useRef } from "react";
 import {
   MessageActions,
   MessageAction,
@@ -26,26 +26,34 @@ const ChatWindow = ({ id, initialMessages }: Props) => {
 
   const { attachment } = useAttachments();
 
-  let firstMessage:UIMessage=initialMessages[0]
+  const firstMessage = initialMessages.at(0);
 
-  if (initialMessages.length==1){
-    initialMessages=[]
-  }
+  const initialChatMessages =
+    initialMessages.length === 1 ? [] : initialMessages;
 
-  const { messages, sendMessage, regenerate } = useChat({
+  const { messages, sendMessage } = useChat({
     transport: new DefaultChatTransport({
       api: `/api/chat/${id}`,
     }),
-    messages: initialMessages,
+    messages: initialChatMessages,
   });
-  useEffect(()=>{
 
-    if(messages.length==0 && firstMessage.parts[0].type=="text"){
-       handleSubmit(firstMessage.parts[0].text,true)
+  const hasGenerated = useRef(false);
+
+  useEffect(() => {
+    if (hasGenerated.current) return;
+
+    if (
+      messages.length === 0 &&
+      firstMessage?.parts[0]?.type === "text"
+    ) {
+      hasGenerated.current = true;
+      handleSubmit(firstMessage.parts[0].text, true);
     }
+  }, [messages, firstMessage]);
 
-},[])
-  const handleSubmit = async (textMessage: string,generateOnly=false) => {
+  
+  const handleSubmit = async (textMessage: string, generateOnly = false) => {
     await sendMessage(
       { text: textMessage },
       {
@@ -59,9 +67,9 @@ const ChatWindow = ({ id, initialMessages }: Props) => {
   };
 
   return (
-<div className="flex h-full flex-col ">
-  <div className="flex-1 overflow-y-auto">
-          <Conversation>
+    <div className="flex h-full flex-col ">
+      <div className="flex-1 overflow-y-auto">
+        <Conversation>
           <ConversationContent>
             {messages.map((message, messageIndex) => (
               <Fragment key={message.id}>
@@ -106,11 +114,11 @@ const ChatWindow = ({ id, initialMessages }: Props) => {
           </ConversationContent>
           <ConversationScrollButton />
         </Conversation>
- </div>
- <div className="sticky bottom-0 border-t z-10 bg-background p-4 w-full">
-    <ChatInput onSubmit={handleSubmit} />
-  </div>
-  </div>
+      </div>
+      <div className="sticky bottom-0 border-t z-10 bg-background p-4 w-full">
+        <ChatInput onSubmit={handleSubmit} />
+      </div>
+    </div>
 
   );
 };
