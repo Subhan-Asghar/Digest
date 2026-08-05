@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React, { Suspense } from 'react'
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller, useForm } from "react-hook-form"
@@ -183,7 +183,9 @@ const Signup = ({
             </form>
 
             <div className="flex flex-col gap-2 mt-4">
-              <GoogleAuth errorRedirect="/signup" />
+              <Suspense fallback={null}>
+      <GoogleAuth errorRedirect="/signup" />
+    </Suspense>
               <FieldDescription className="text-center">
                 Already have an account?{" "}
                 <a href="/signin" className="underline">
